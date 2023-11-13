@@ -1,6 +1,7 @@
 import react, { Component } from 'react';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import { auth } from '../../firebase/config';
+import Menu from '../../components/Menu/Menu';
 
 class Home extends Component {
     constructor(){
@@ -21,10 +22,13 @@ class Home extends Component {
     render(){
         return(
             <View>
+            
                 <Text>HOME</Text>
                 <TouchableOpacity onPressOut={()=>this.logout()}>
                     <Text>Logout</Text>
                 </TouchableOpacity>
+               
+                
             </View>
         )
     }
