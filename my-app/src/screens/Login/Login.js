@@ -1,4 +1,4 @@
-import react, { Component } from 'react';
+import React, { Component } from 'react';
 import { auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
@@ -22,7 +22,7 @@ class Login extends Component {
 
 
                 //Redirigir al usuario a la home del sitio.
-                this.props.navigation.navigate('Home')
+                this.props.navigation.navigate('Menu')
 
             })
             .catch( error => {
