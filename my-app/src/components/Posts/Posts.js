@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {db, auth} from '../../firebase/config';
 import firebase from 'firebase';
 
@@ -10,7 +10,8 @@ class Post extends Component{
 
         this.state = {
             like: false,
-            cantidadDeLikes: this.props.dataPost.datos.likes.length
+            cantidadDeLikes: this.props.dataPost.datos.likes.length,
+            canntidadDeComentarios: this.props.dataPost.datos.comentarios.length,
         }
     }
 
@@ -23,13 +24,12 @@ class Post extends Component{
         }
     }
 
-    //Necesitamos en FB que cada Post tenga una propiedad con un array de emails
-
     likear(){
         //Agrega un email en la propiedad like del post
         db.collection('posts').doc(this.props.dataPost.id).update({
             likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)         
         })
+
         .then( res => this.setState({
             like:true,
             cantidadDeLikes: this.props.dataPost.datos.likes.length
@@ -51,17 +51,24 @@ class Post extends Component{
         .catche(e => console.log(e))
     }
 
-
-
     render (){
         console.log(this.props)
         return(
-            <View>
-    
-                <Text> {this.props.dataPost.datos.owner} </Text>
-                <Text> {this.props.dataPost.datos.textoPost} </Text>
-                <Text> Cantidad de likes: {this.state.cantidadDeLikes} </Text>
+            <View style= {styles.manzana}>
+              <View style= {styles.banana}>
 
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('SuPerfil', this.props.dataPost.datos.owner)}>
+                    <Text style={styles.usuario}> Posteo de: {this.props.dataPost.owner} </Text>
+                </TouchableOpacity>
+
+                <Image style= {styles.camara}> 
+                    source={{uri: this.props.dataPost.datos.foto}}
+                </Image>
+              </View>
+              
+              <Text style= {styles.textoPosteo}>{this.props.dataPost.datos.textoPost}</Text>
+              
+              <View style={styles.bar}>
                 {
                     this.state.like ?
                     <TouchableOpacity style={styles.button}onPress={()=>this.unlike()}>
@@ -75,7 +82,16 @@ class Post extends Component{
                     </TouchableOpacity>
                 }
 
+                <Text style={styles.textButton}>{this.state.cantidadDeLikes}</Text>
             </View>
+
+            <View>
+                <Text>{this.state.canntidadDeComentarios} Comentarios</Text>
+                <TouchableOpacity style= {styles.button} onPress={() => this.props.navigation.navigate('Comment' , {id: this.props.dataPost.id})}>
+ 
+                </TouchableOpacity>
+            </View>
+        </View>
         )
     }
 }
@@ -107,8 +123,35 @@ const styles = StyleSheet.create({
     },
     textButton:{
         color: '#fff'
+    }, 
+    manzana:{
+        margin: 10,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+    },
+    banana: {
+        marginBottom: 10
+    },
+    usuario: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    camara:{
+        width: '100%',
+        aspectRatio: 1, 
+        resizeMode: 'cover',  
+        marginBottom: 10,
+        marginTop: 5
+    }, 
+    textoPosteo:{
+        fontSize: 15,
+        marginBottom: 10,
+    }, 
+    bar:{
+        flexDirection: 'row',
+        alignItems: 'center',
     }
-
 })
 
 export default Post
