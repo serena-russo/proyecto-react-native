@@ -1,6 +1,6 @@
-import react, { Component } from 'react';
+import react, {Component} from 'react';
 import {db, auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
 
 class PostForm extends Component {
     constructor(){
@@ -8,6 +8,26 @@ class PostForm extends Component {
         this.state={
            textoPost:'',
         }
+    }
+
+    componentDidMount(){
+        //traer datos de firebase, y cargarlos en el estado
+        db.collection('posts').onSnapshot(
+            listaPosts => {
+                let postsAMostrar = [];
+
+                listaPosts.forEach(unPost => {
+                    postsAMostrar.push({
+                        id: unPost.id,
+                        datos: unPost.data()
+                    })
+                })
+
+                this.setState({
+                    posts: postsAMostrar
+                })
+            }
+        )
     }
 
     //1)Completar la creación de posts
@@ -24,6 +44,7 @@ class PostForm extends Component {
 
 
     render(){
+        console.log(this.state)
         return(
             <View style={styles.formContainer}>
                 <Text>New Post</Text>
@@ -37,6 +58,13 @@ class PostForm extends Component {
                 <TouchableOpacity style={styles.button} onPress={()=>this.crearPost(auth.currentUser.email, this.state.textoPost, Date.now())}>
                     <Text style={styles.textButton}>Postear</Text>    
                 </TouchableOpacity>
+
+                <Text>Lista de posteos creados</Text>
+                <FlatList
+                    data={this.state.posts}
+                    keyExtractor={unPost => unPost.id}
+                    renderItem={({item})=> <Text>{item.datos.textoPost}</Text>}
+                />
             </View>
         )
     }
