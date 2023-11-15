@@ -17,7 +17,7 @@ class Camara extends Component{
     }
 
     componentDidMount(){
-        Camara.requestCameraPermissionsAsync()
+        Camera.requestCameraPermissionsAsync()
             .then( ()=>{
                 this.setState({
                     permisosDeHardware: true,
@@ -59,16 +59,31 @@ class Camara extends Component{
     }
     render(){
         return(
-            <View>
-                <Camara
-                    style={StyleSheet.camara}
-                    type={Camara.Constants.Type.front}
-                    ref={metedosDeCamara => this.metedosDeCamara = metedosDeCamara}
-                />
-                <TouchableOpacity onPress={()=>this.sacarFoto()}>
-                    <Text>Sacar Foto</Text>
-                </TouchableOpacity>
-            </View>
+            <>
+                {this.state.permisosDeHardware ?
+                this.state.mostrarLaCamara ?
+                <View>
+                    <Camara
+                        style={styles.camara}
+                        type={Camera.Constants.Type.front}
+                        ref={metedosDeCamara => this.metedosDeCamara = metedosDeCamara}
+                    />
+                    <TouchableOpacity onPress={()=>this.sacarFoto()}>
+                        <Text>Sacar Foto</Text>
+                    </TouchableOpacity>
+                </View>
+                :
+                <view>
+                    <image style={styles.camara}
+                    source={{uri: this.state.urlInternaFoto}} />
+                    <TouchableOpacity onPress={()=>this.rechazarFoto()}>
+                        <Text>Cancelar foto</Text>
+                    </TouchableOpacity>
+                </view>
+                :
+                <Text>No se habilitarion los permisos de la camara</Text>
+                }
+            </>
         )
     }
 }

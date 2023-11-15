@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth } from '../../firebase/config';
+import { auth , db} from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
 class Register extends Component {
@@ -28,9 +28,9 @@ class Register extends Component {
         })
     }
 
-    register (email, pass, userName, miniBio, fotoPerfil){
+    register (email, password, userName, miniBio, fotoPerfil){
         if (email && password && userName) {
-            auth.createUserWithEmailAndPassword(email, pass)
+            auth.createUserWithEmailAndPassword(email, password)
                 .then( response => {
                     db.collection('users').add({
                         owner: auth.currentUser.email,
@@ -39,7 +39,7 @@ class Register extends Component {
                         fotoPerfil: fotoPerfil || '',
                         createdAt: Date.now(),
                     })
-                    this.props.navigation.navigate("Login")
+                    this.props.navigation.navigate('Login')
             })
 
                 .catch( error => {

@@ -16,11 +16,16 @@ class Post extends Component{
     }
 
     componentDidMount(){
-        //Chequiar apenas carga si el post esta o no likeado
-        if (this.props.dataPost.datos.likes.includes(auth.currentUser.email)){
+
+        if(this.props.dataPost.datos.likes.length === 0){
             this.setState({
-                like:true
+                like: false
             })
+        }
+        if(this.props.dataPost.datos.likes.length > 0){
+            this.props.dataPost.datos.likes.forEach( like => {if (like === auth.currentUser.email) {
+                this.setState({ like: true })
+            }})
         }
     }
 
@@ -61,9 +66,9 @@ class Post extends Component{
                     <Text style={styles.usuario}> Posteo de: {this.props.dataPost.owner} </Text>
                 </TouchableOpacity>
 
-                <Image style= {styles.camara}> 
+                <Image style= {styles.camara}
                     source={{uri: this.props.dataPost.datos.foto}}
-                </Image>
+                /> 
               </View>
               
               <Text style= {styles.textoPosteo}>{this.props.dataPost.datos.textoPost}</Text>
