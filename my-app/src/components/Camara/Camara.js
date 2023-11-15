@@ -4,7 +4,7 @@ import {db, storage} from '../../firebase/config';
 import { TouchableOpacity, View, Text } from 'react-native';
 
 
-class Camera extends Component{
+class Camara extends Component{
     constructor(props){
         super(props),
         this.state = {
@@ -17,7 +17,7 @@ class Camera extends Component{
     }
 
     componentDidMount(){
-        Camera.requestCameraPermissionsAsync()
+        Camara.requestCameraPermissionsAsync()
             .then( ()=>{
                 this.setState({
                     permisosDeHardware: true,
@@ -60,10 +60,10 @@ class Camera extends Component{
     render(){
         return(
             <View>
-                <Camera
-                    //style={}
-                    type={ Camera.Constants.Type.front}
-                    ref={ metedosDeCamara => this.metedosDeCamara = metedosDeCamara}
+                <Camara
+                    style={StyleSheet.camara}
+                    type={Camara.Constants.Type.front}
+                    ref={metedosDeCamara => this.metedosDeCamara = metedosDeCamara}
                 />
                 <TouchableOpacity onPress={()=>this.sacarFoto()}>
                     <Text>Sacar Foto</Text>
@@ -71,10 +71,19 @@ class Camera extends Component{
             </View>
         )
     }
-
-
-
 }
 
-export default Camera
+const styles = StyleSheet.create({
+    formContainer: {
+        height: `60vh`,
+        widht: `100vw`,
+    },
+    camera: {
+        widht: '100%',
+        height: '100%',
+    }
+
+});
+
+export default Camara
 
