@@ -11,7 +11,7 @@ class Post extends Component{
         this.state = {
             like: false,
             cantidadDeLikes: this.props.dataPost.datos.likes.length,
-            canntidadDeComentarios: this.props.dataPost.datos.comentarios.length,
+            cantidadDeComentarios: this.props.dataPost.datos.comentarios.length
         }
     }
 
@@ -86,7 +86,7 @@ class Post extends Component{
             </View>
 
             <View>
-                <Text>{this.state.canntidadDeComentarios} Comentarios</Text>
+                <Text>{this.state.cantidadDeComentarios} Comentarios</Text>
                 <TouchableOpacity style= {styles.button} onPress={() => this.props.navigation.navigate('Comment' , {id: this.props.dataPost.id})}>
  
                 </TouchableOpacity>

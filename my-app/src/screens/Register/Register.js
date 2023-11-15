@@ -39,7 +39,7 @@ class Register extends Component {
                         fotoPerfil: fotoPerfil || '',
                         createdAt: Date.now(),
                     })
-                    this.props.navigation("Login")
+                    this.props.navigation.navigate("Login")
             })
 
                 .catch( error => {
@@ -48,7 +48,7 @@ class Register extends Component {
                     console.error ("Firebase authentication error:", error);
                 });
             } else {
-                this.setState.state({mensajeE: 'Completar los campos obligatorios para registrarse'});
+                this.setState({mensajeE: 'Completar los campos obligatorios para registrarse'});
             }
     }
 
@@ -99,8 +99,9 @@ class Register extends Component {
                 <TouchableOpacity style={styles.button} onPress={()=> this.register(this.state.email, this.state.password, this.state.userName, this.state.miniBio, this.state.fotoPerfil)} disabled= {!this.state.email || !this.state.password || !this.state.userName}>    
                     <Text style={styles.textButton}>Registrarse</Text>    
                 </TouchableOpacity>
+                
                 <TouchableOpacity onPress={ () => this.props.navigation.navigate('Login')}>
-                   <Text>Ya tengo cuenta --- Ir al login</Text>
+                   <Text>Ya tengo cuenta. Ir al login</Text>
                 </TouchableOpacity>
             </View>
         )
