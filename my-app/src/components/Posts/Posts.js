@@ -57,6 +57,7 @@ class Post extends Component{
         console.log(this.props)
         return(
             <View>
+    
                 <Text> {this.props.dataPost.datos.owner} </Text>
                 <Text> {this.props.dataPost.datos.textoPost} </Text>
                 <Text> Cantidad de likes: {this.state.cantidadDeLikes} </Text>

@@ -1,70 +1,63 @@
 import react, {Component} from 'react';
 import {db, auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
+import Camara from '../../components/Camara/Camara'
 
 class PostForm extends Component {
     constructor(){
         super()
         this.state={
            textoPost:'',
+           mostrarCamara: true,
+           url:''
         }
     }
 
-    componentDidMount(){
-        //traer datos de firebase, y cargarlos en el estado
-        db.collection('posts').onSnapshot(
-            listaPosts => {
-                let postsAMostrar = [];
-
-                listaPosts.forEach(unPost => {
-                    postsAMostrar.push({
-                        id: unPost.id,
-                        datos: unPost.data()
-                    })
-                })
-
-                this.setState({
-                    posts: postsAMostrar
-                })
-            }
-        )
-    }
-
-    //1)Completar la creación de posts
-    crearPost(owner, textoPost, createdAt){
+    crearPost(){
         //Crear la colección Users
         db.collection('posts').add({
             owner: owner, //auth.currentUser.email,
             textoPost: textoPost, //this.state.textoPost,
-            createdAt: createdAt //Date.now(), 
+            createdAt: createdAt, //Date.now(), 
+            likes: [],
+            comentarios:[],
+            foto: this.state.url
         })
-        .then( res => console.log(res))
+        .then( console.log ("posteo ok!"))
         .catch( e => console.log(e))
     }
 
+    onImageUpload(url){
+        this.setState({
+            mostrarCamara: false,
+            url: url
+        })
+    }
+
+  
 
     render(){
-        console.log(this.state)
         return(
             <View style={styles.formContainer}>
-                <Text>New Post</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(text)=>this.setState({textoPost: text})}
-                    placeholder='Escribir...'
-                    keyboardType='default'
-                    value={this.state.textoPost}
-                    />
-                <TouchableOpacity style={styles.button} onPress={()=>this.crearPost(auth.currentUser.email, this.state.textoPost, Date.now())}>
-                    <Text style={styles.textButton}>Postear</Text>    
-                </TouchableOpacity>
+                {
+                    this.state.mostrarCamara ?
+                    <Camara onImageUpload = {(url) => this.onImageUpload(url)} />
+                    :
+                    <View> 
+                        <Text style= {styles.titulo}> New Post </Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={(text) => this.setState ({textoPost: text})}
+                            placeholder='caption here...'
+                            keyboardType='default'
+                            value= {this.state.textoPost}
+                        />
 
-                <Text>Lista de posteos creados</Text>
-                <FlatList
-                    data={this.state.posts}
-                    keyExtractor={unPost => unPost.id}
-                    renderItem={({item})=> <Text>{item.datos.textoPost}</Text>}
-                />
+                        <TouchableOpacity style = {styles.button} onPress={() => this.crearPost()}>
+                            <Text style={styles.textButton}>Post</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
             </View>
         )
     }
@@ -97,7 +90,13 @@ const styles = StyleSheet.create({
     },
     textButton:{
         color: '#fff'
+    },
+    titulo:{
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 25,
     }
+
 
 })
 

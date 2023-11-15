@@ -8,7 +8,10 @@ class Register extends Component {
         this.state={
             email:'',
             userName:'',
-            password:''
+            password:'',
+            miniBio: '',
+            fotoPerfil: '',
+            mensajeE: '',
         }
     }
 
@@ -19,33 +22,43 @@ class Register extends Component {
             console.log(user)
 
             if (user) {
-                //Redirigir al usuario a la home del sitio.
-               this.props.navigation.navigate('Menu')
+                //Redirigir al usuario al login del sitio.
+               this.props.navigation.navigate('Login')
             }
-
         })
     }
 
-    register (email, pass){
-        auth.createUserWithEmailAndPassword(email, pass)
-            .then( response => {
-                //Cuando firebase responde sin error
-                console.log('Registrado ok', response);
-
-                 //Cambiar los estados a vacío como están al inicio.
-
+    register (email, pass, userName, miniBio, fotoPerfil){
+        if (email && password && userName) {
+            auth.createUserWithEmailAndPassword(email, pass)
+                .then( response => {
+                    db.collection('users').add({
+                        owner: auth.currentUser.email,
+                        userName: userName,
+                        bio: bio || '', 
+                        fotoPerfil: fotoPerfil || '',
+                        createdAt: Date.now(),
+                    })
+                    this.props.navigation("Login")
             })
-            .catch( error => {
-                //Cuando Firebase responde con un error
-                console.log(error);
 
-            })
+                .catch( error => {
+                    //Cuando Firebase responde con un error
+                    this.setState ({mensajeE: error.message})
+                    console.error ("Firebase authentication error:", error);
+                });
+            } else {
+                this.setState.state({mensajeE: 'Completar los campos obligatorios para registrarse'});
+            }
     }
 
     render(){
         return(
             <View style={styles.formContainer}>
                 <Text>Register</Text>
+                {this.state.mensajeE ? <Text style={styles.textoE}>{this.state.mensajeE}</Text>
+                : null}
+
                 <TextInput
                     style={styles.input}
                     onChangeText={(text)=>this.setState({email: text})}
@@ -68,11 +81,26 @@ class Register extends Component {
                     secureTextEntry={true}
                     value={this.state.password}
                 />
-                <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.password)}>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(text)=>this.setState({miniBio: text})}
+                    placeholder='opcional: mini biografia'
+                    keyboardType='default'
+                    value={this.state.miniBio}
+                    />
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(text)=>this.setState({fotoPerfil: text})}
+                    placeholder='opcional: URL para insertar imagen'
+                    keyboardType='default'
+                    value={this.state.fotoPerfil}
+                    />
+
+                <TouchableOpacity style={styles.button} onPress={()=> this.register(this.state.email, this.state.password, this.state.userName, this.state.miniBio, this.state.fotoPerfil)} disabled= {!this.state.email || !this.state.password || !this.state.userName}>    
                     <Text style={styles.textButton}>Registrarse</Text>    
                 </TouchableOpacity>
                 <TouchableOpacity onPress={ () => this.props.navigation.navigate('Login')}>
-                   <Text>Ya tengo cuenta. Ir al login</Text>
+                   <Text>Ya tengo cuenta --- Ir al login</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -106,6 +134,10 @@ const styles = StyleSheet.create({
     },
     textButton:{
         color: '#fff'
+    },
+    textoE: {
+        color: 'red',
+        marginBottom: 20
     }
 
 })
