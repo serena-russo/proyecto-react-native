@@ -35,7 +35,7 @@ class Register extends Component {
                     db.collection('users').add({
                         owner: auth.currentUser.email,
                         userName: userName,
-                        bio: bio || '', 
+                        miniBio: miniBio || '', 
                         fotoPerfil: fotoPerfil || '',
                         createdAt: Date.now(),
                     })
