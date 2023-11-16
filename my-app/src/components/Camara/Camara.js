@@ -18,10 +18,13 @@ class Camara extends Component{
 
     componentDidMount(){
         Camera.requestCameraPermissionsAsync()
-            .then( ()=>{
-                this.setState({
-                    permisosDeHardware: true,
-                })
+            .then( response =>{
+                if (response.granted === true){
+                    this.setState({
+                        permisosDeHardware: true,
+                    })
+                }
+                
             })
             .catch( e => console.log(e))
     }
@@ -45,6 +48,9 @@ class Camara extends Component{
                         ref.getDownloadURL()
                             .then(url=>{
                                 this.props.onImageUpload(url);
+                                this.setState({
+                                    urlInternaFoto: ''
+                                })
                             })
                     })
         })

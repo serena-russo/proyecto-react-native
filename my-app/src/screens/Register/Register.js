@@ -12,6 +12,7 @@ class Register extends Component {
             miniBio: '',
             fotoPerfil: '',
             mensajeE: '',
+            logeado: false
         }
     }
 
@@ -28,28 +29,49 @@ class Register extends Component {
         })
     }
 
-    register (email, password, userName, miniBio, fotoPerfil){
-        if (email && password && userName) {
-            auth.createUserWithEmailAndPassword(email, password)
-                .then( response => {
-                    db.collection('users').add({
-                        owner: auth.currentUser.email,
-                        userName: userName,
-                        miniBio: miniBio || '', 
-                        fotoPerfil: fotoPerfil || '',
-                        createdAt: Date.now(),
+    register (email, password){
+        auth.createUserWithEmailAndPassword(email, password)
+                .then( () => {
+                    this.setState({logeado:true});
                     })
-                    this.props.navigation.navigate('Login')
+                .then ( res =>{
+                    let datosUser={
+                        owner: this.state.email,
+                        userName: this.state.userName,
+                        miniBio: this.state.miniBio, 
+                        fotoPerfil: this.state.fotoPerfil,
+                        createdAt: Date.now(),
+                    };
+                    db.collection('users').add(datosUser)
+                        .then(()=>{
+                            this.setState({
+                                email: "",
+                                userName: "",
+                                password: "",
+                                miniBio: "",
+                                fotoPerfil: "",
+                            })
+                            auth.signOut();
+                        }) 
+                        .then(() => {
+                            this.props.navigation.navigate('Menu');
+                    
             })
 
                 .catch( error => {
                     //Cuando Firebase responde con un error
-                    this.setState ({mensajeE: error.message})
-                    console.error ("Firebase authentication error:", error);
+                    let mensajeError =  "Error en el registro."
+                    if (error.code === "auth/email-already-in-use") {
+                        mensajeError = "El email ya está usado";
+                    } else if (error.code === "auth/invalid-email") {
+                        mensajeError = "El email no es válido";
+                    } else if (error.code === "auth/weak-password") {
+                        mensajeError = "La contraseña es débil";
+                    } 
+                    this.setState({ error: mensajeError });
+                    console.log(error);
                 });
-            } else {
-                this.setState({mensajeE: 'Completar los campos obligatorios para registrarse'});
-            }
+            }) 
     }
 
     render(){

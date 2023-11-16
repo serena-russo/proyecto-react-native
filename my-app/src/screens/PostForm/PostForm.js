@@ -16,9 +16,9 @@ class PostForm extends Component {
     crearPost(){
         //Crear la colección Users
         db.collection('posts').add({
-            owner: owner, //auth.currentUser.email,
-            textoPost: textoPost, //this.state.textoPost,
-            createdAt: createdAt, //Date.now(), 
+            owner: auth.currentUser.email,
+            textoPost: this.state.textoPost,
+            createdAt: Date.now(), 
             likes: [],
             comentarios:[],
             foto: this.state.url
@@ -43,7 +43,8 @@ class PostForm extends Component {
                     this.state.mostrarCamara ?
                     <Camara onImageUpload = {(url) => this.onImageUpload(url)} />
                     :
-                    <View> 
+                    <>
+                     
                         <Text style= {styles.titulo}> New Post </Text>
                         <TextInput
                             style={styles.input}
@@ -52,11 +53,11 @@ class PostForm extends Component {
                             keyboardType='default'
                             value= {this.state.textoPost}
                         />
-
-                        <TouchableOpacity style = {styles.button} onPress={() => this.crearPost()}>
+                    <></>
+                        <TouchableOpacity style = {styles.button} onPress={() => {this.crearPost(); this.props.navigation.navigate('Home'); this.setState({ mostrarCamara: true})}}>
                             <Text style={styles.textButton}>Post</Text>
                         </TouchableOpacity>
-                    </View>
+                    </>
                 }
             </View>
         )

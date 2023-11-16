@@ -23,7 +23,7 @@ class Post extends Component{
             })
         }
         if(this.props.dataPost.datos.likes.length > 0){
-            this.props.dataPost.datos.likes.forEach( like => {if (like === auth.currentUser.email) {
+            this.props.dataPost.datos.likes.forEach( like => {if (like === auth.currentUser.owner) {
                 this.setState({ like: true })
             }})
         }

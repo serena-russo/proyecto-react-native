@@ -53,7 +53,7 @@ class Perfil extends Component {
         console.log(this.state);
         return(
            <View>
-                <TouchableOpacity onPress={() => this.signOut()}>
+                <TouchableOpacity onPress={() => this.logout()}>
                     <Text> Cerrar sesión</Text>
                 </TouchableOpacity>
             </View>
