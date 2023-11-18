@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Camera} from "expo-camera";
 import {db, storage} from '../../firebase/config';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
 
 
 class Camara extends Component{
@@ -29,17 +29,19 @@ class Camara extends Component{
             .catch( e => console.log(e))
     }
     sacarFoto(){
-        this.metedosDeCamara.takePictureAsync()
-        .then(urlInternaFoto=>{
-            this.setState({
-                urlInternaFoto: urlInternaFoto.uri,
-                mostrarLaCamara: false
+        console.log ("sacando foto")
+
+        this.metodosDeCamara.takePictureAsync()
+            .then( urlInternaFoto => {
+                this.setState({
+                    urlInternaFoto: urlInternaFoto.uri,
+                    mostrarLaCamara: false
+                })
             })
-        })
-        .catch( e => console.log(e))
+            .catch( e => console.log(e))
     }
 
-    guradarFoto(){
+    guardarFoto(){
         fetch(this.state.urlInternaFoto)
             .then(res=> res.blob())
             .then(image =>{
@@ -58,7 +60,7 @@ class Camara extends Component{
         .catch(e=>console.log(e))
     }
 
-    rechazarFoto(){
+    cancelarFoto(){
         this.setState({
             mostrarLaCamara: true,
             urlInternaFoto: ''
@@ -67,26 +69,30 @@ class Camara extends Component{
     render(){
         return (
             <>
-                {this.state.permisosDeHardware ? 
-                this.state.mostrarLaCamara ?
-                <View style={styles.formContainer} >
-                    <Camera style={styles.camera} type={Camera.Constants.Type.front} ref={metodosCamara => this.metodosCamara = metodosCamara}/>
-                    <TouchableOpacity style={styles.button} onPress={() => this.sacarFoto()}>
-                        <Text style={styles.textButton}>Sacar foto</Text>
-                    </TouchableOpacity>
-                </View>
+                {this.state.permisosDeHardware === true ? 
+                this.state.mostrarLaCamara === false ?
+                <React.Fragment>
+                    <View style={styles.formContainer}>
+                        <Image style={styles.camera} source={{uri: this.state.urlInternaFoto}} />
+                        <TouchableOpacity style={styles.button} onPress={() => this.guardarFoto()}>
+                            <Text style={styles.textButton}>Aceptar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => this.cancelarFoto()}>
+                            <Text style={styles.textButton}>Cancelar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </React.Fragment>
                 :
-                <View style={styles.formContainer}>
-                    <Image style={styles.camera} source={{uri: this.state.urlInternaFoto}} />
-                    <TouchableOpacity style={styles.button} onPress={() => this.aceptarFoto()}>
-                        <Text style={styles.textButton}>Aceptar</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => this.rechazarFoto()}>
-                        <Text style={styles.textButton}>Rechazar</Text>
-                    </TouchableOpacity>
-                </View>
+                <React.Fragment>
+                    <View style={styles.formContainer} >
+                        <Camera style={styles.camera} type={Camera.Constants.Type.front} ref={metodosDeCamara => this.metodosDeCamara = metodosDeCamara}/>
+                        <TouchableOpacity style={styles.button} onPress={() => this.sacarFoto()}>
+                            <Text style={styles.textButton}>Sacar foto</Text>
+                        </TouchableOpacity>
+                    </View>
+                </React.Fragment>
                 :
-                <Text style={styles.texto}>No tenes permisos de la camara</Text>
+                <Text style={styles.texto}>La cámara no tiene permisos para ser usada</Text>
                 }
             </>
         )
@@ -106,4 +112,3 @@ const styles = StyleSheet.create({
 });
 
 export default Camara
-
