@@ -62,8 +62,8 @@ class Post extends Component{
             <View style= {styles.manzana}>
               <View style= {styles.banana}>
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('SuPerfil', this.props.dataPost.datos.owner)}>
-                    <Text style={styles.usuario}> Posteo de: {this.props.dataPost.owner} </Text>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('UsuarioPerfil', {mail: this.props.dataPost.datos.owner})}>
+                    <Text style={styles.usuario}> Posteo de: {this.props.dataPost.datos.owner} </Text>
                 </TouchableOpacity>
 
                 <Image style= {styles.camara}

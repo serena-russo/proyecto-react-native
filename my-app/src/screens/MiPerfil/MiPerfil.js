@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image} from 'react-native';
 import { auth, db } from '../../firebase/config';
+import Posts from '../../components/Posts/Posts';
 
 class Perfil extends Component {
     constructor(props){
@@ -16,10 +17,10 @@ class Perfil extends Component {
         db.collection('posts').where('owner', '==', auth.currentUser.email)
         .orderBy('createdAt', 'desc')
         .onSnapshot(
-            listaPosts => {
+            Posts => {
                 let postsAMostrar = [];
 
-                listaPosts.forEach(unPost => {
+                Posts.forEach(unPost => {
                     postsAMostrar.push({
                         id: unPost.id,
                         datos: unPost.data(),
@@ -27,18 +28,18 @@ class Perfil extends Component {
                 })
 
                 this.setState({
-                    posts: postsAMostrar
+                    ListaPosts: postsAMostrar
                 })
             }
         )
 
         db.collection('users')
             .where('owner', '==', auth.currentUser.email)
-            .onSnapshot(doc => {
-                doc.forEach(doc =>
+            .onSnapshot(user => {
+                user.forEach(info =>
                     this.setState({
-                        id: doc.id,
-                        infoUser: doc.data()
+                        id: info.id,
+                        infoUser: info.data()
                     }))
             })
     }
@@ -52,27 +53,27 @@ class Perfil extends Component {
     render(){
         console.log(this.state);
         return(
-            <ScrollView style= {styles.contenedor}>
+            <View style= {styles.contenedor}>
 
                 <View  style={styles.info3}>
-                    <Text style= {styles.usuario}>Bienvenidi {this.state.infoUser.userName}</Text>
+                    <Text style= {styles.usuario}>Bienvenido {this.state.infoUser.userName}</Text>
                     <Text style= {styles.bio}>Biografia: {this.state.infoUser.miniBio}</Text>
-                    <Text style= {styles.mail}>Mail: {this.state.infoUser.userName}</Text>
-                    <Image style= {styles.imagenP} source={{uri: this.state.infoUser.imagenP}}/>
+                    <Text style= {styles.mail}>Mail: {this.state.infoUser.owner}</Text>
+                    <Image style= {styles.imagenP} source={{uri: this.state.infoUser.fotoPerfil}}/>
                 </View>
 
                 <Text style={styles.titulos}>Mis posteos:</Text>
-                <FlatList>
-                    data={this.state.props}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({item})=> <Post dataPost={item}/>}
-                </FlatList>
+                <FlatList
+                    data={this.state.ListaPosts}
+                    keyExtractor={(onePost) => onePost.id}
+                    renderItem={({ item }) => <Posts dataPost={item} navigation={this.props.navigation} />}
+                  />
            
                 <TouchableOpacity onPress={() => this.logout()} style={styles.botonSalir}>
                     <Text style={styles.mail}> Cerrar sesión</Text>
                 </TouchableOpacity>
             
-            </ScrollView>
+            </View>
         )
     }
 }

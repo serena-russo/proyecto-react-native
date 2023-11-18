@@ -62,7 +62,7 @@ class PostForm extends Component {
                         style={styles.button}
                         onPress={() => {
                             this.crearPost(auth.currentUser.email, this.state.textoPost, this.state.fotoUrl, Date.now());
-                            this.props.navigation.navigate('Menu');
+                            this.props.navigation.navigate('Home');
                             this.setState({ mostrarCamara: true });
                         }}
                         >

@@ -1,116 +1,52 @@
-import react, { Component } from 'react';
+import React, { Component } from 'react';
 import {db, auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet,FlatList, ActivityIndicator, Image} from 'react-native';
 
 
-class Buscador extends Component {
-    constructor(){
-        super();
+class UsuarioPerfil extends Component {
+    constructor(props) {
+        super(props);
         this.state = {
-            backup: [],
-            caampoBusqueda: "",
-            filtradoUsers: [],
-            userId: "",
-            infoUser: null,
-            usuarios: [],
-        }
+            users: [],
+            ListaPosts: [],
+            mail: this.props.route.params.mail
+        };
     }
-    
-
-    componentDidMount(){
-        db.collection("users").onSnapshot(
+    componentDidMount() {
+        db.collection("posts").where("owner", "==", this.props.route.params).onSnapshot(
             docs => {
-                let usuarios = [];
-                docs.forEach(dot => {
-                    usuarios.push({
-                        id: dot.id,
-                        data: dot.data()
+                let posteos = [];
+                
+                docs.forEach(doc => {
+                    posteos.push({
+                        id: doc.id,
+                        data: doc.data()
                     })
-                    this.setState({backup: usuarios})
                 })
-                console.log('aca')
-                console.log(usuarios)
+                this.setState({ 
+                    ListaPosts: posteos 
+                })
             }
         )
-    }
+        db.collection('users').where("owner", "==", this.props.route.params).onSnapshot(
+            docs => {
+                let usuario = [];
 
-    busqueda(){
-        let filtrado = this.state.backup.filter(fil => {
-            if(fil.data.userName.toLowerCase().includes(this.state.caampoBusqueda.toLowerCase())) {
-                return fil
-            }
-        console.log('filtrado')
-        console.log(filtrado) 
+                docs.forEach(doc => {
+                    usuario.push({
+                        id: doc.id,
+                        data: doc.data()
+                    })
+                })
+                this.setState({ 
+                    users: usuario 
+                })
+
             })
-        this.setState({filtradoUsers: filtrado}, () => console.log(this.state.filtradoUsers))    
+
     }
-    usuarioSeleccionado(id){
-        this.props.navigation.navigate("ProfileUsers", id)
-        console.log(id)
-    }
-    
-
-   render(){
-        return(
-            <View style={styles.formContainer}>
-                <Image
-                    style={styles.image} 
-                    source={require('../../../assets/Banner.png')}
-                    resizeMode='contain' />
-                {this.state.backup === 0 ? 
-                
-                <View>
-                   <ActivityIndicator size='large' color='white' />
-                   
-                   <Text>NO HAS BUSCADO NADA AÚN</Text>
-               </View>
-               :
-                <View>
-                <TextInput
-                style= {styles.input}
-                onChangeText={(text)=> this.setState({caampoBusqueda: text})}
-                placeholder='Buscar Perfiles'
-                keyboardType='default'
-                value={this.state.caampoBusqueda}
-                />
-                </View>
-                }
-
-                <TouchableOpacity style={styles.button} onPress={()=> {
-                    this.busqueda();
-                    }}>
-                    <Text style={styles.texto}>Buscar</Text>
-                </TouchableOpacity>
-                {
-                    this.state.filtradoUsers.length > 0 ?
-                        
-                        <View>
-                            <Text style={styles.texto}>Resultados de busqueda para: {this.state.caampoBusqueda}</Text>  
-                            <FlatList
-                            data={this.state.filtradoUsers}
-                            keyExtractor={user => user.id}
-                            renderItem= {({item}) =>
-                                <TouchableOpacity style={styles.button} onPress={() => this.usuarioSeleccionado()}>
-                                    <Text style={styles.texto}>{item.data.userName}</Text>
-                                    </TouchableOpacity>
-                            } 
-                            />
-                        </View>     
-                        
-                    :
-                    <Text style={styles.texto}>NO HAY USUARIOS PARA ESTA BÚSQUEDA</Text>
-                    
-                }        
-                
-                
-
-                
-            </View>
-        )
-
-        
-   }
 }
+
 const styles = StyleSheet.create({
     formContainer:{
         flex:1,
@@ -151,4 +87,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default Buscador;
+export default UsuarioPerfil;

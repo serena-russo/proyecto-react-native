@@ -1,6 +1,6 @@
-import react, { Component } from 'react';
-import {db, auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet,FlatList, ActivityIndicator, Image} from 'react-native';
+import React, { Component } from 'react';
+import {db} from '../../firebase/config';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet,FlatList, ActivityIndicator} from 'react-native';
 
 
 class Buscador extends Component {
@@ -53,10 +53,7 @@ class Buscador extends Component {
    render(){
         return(
             <View style={styles.formContainer}>
-                <Image
-                    style={styles.image} 
-                    source={require('../../../assets/Banner.png')}
-                    resizeMode='contain' />
+                
                 {this.state.backup === 0 ? 
                 
                 <View>
