@@ -29,13 +29,14 @@ class Camara extends Component{
             .catch( e => console.log(e))
     }
     sacarFoto(){
-        this.metedosDeCamara.takePicturesAsync()
+        this.metedosDeCamara.takePictureAsync()
         .then(urlInternaFoto=>{
             this.setState({
                 urlInternaFoto: urlInternaFoto.uri,
                 mostrarLaCamara: false
             })
         })
+        .catch( e => console.log(e))
     }
 
     guradarFoto(){
@@ -64,30 +65,28 @@ class Camara extends Component{
         })
     }
     render(){
-        return(
+        return (
             <>
-                {this.state.permisosDeHardware ?
+                {this.state.permisosDeHardware ? 
                 this.state.mostrarLaCamara ?
-                <View>
-                    <Camara
-                        style={styles.camara}
-                        type={Camera.Constants.Type.front}
-                        ref={metedosDeCamara => this.metedosDeCamara = metedosDeCamara}
-                    />
-                    <TouchableOpacity onPress={()=>this.sacarFoto()}>
-                        <Text>Sacar Foto</Text>
+                <View style={styles.formContainer} >
+                    <Camera style={styles.camera} type={Camera.Constants.Type.front} ref={metodosCamara => this.metodosCamara = metodosCamara}/>
+                    <TouchableOpacity style={styles.button} onPress={() => this.sacarFoto()}>
+                        <Text style={styles.textButton}>Sacar foto</Text>
                     </TouchableOpacity>
                 </View>
                 :
-                <view>
-                    <image style={styles.camara}
-                    source={{uri: this.state.urlInternaFoto}} />
-                    <TouchableOpacity onPress={()=>this.rechazarFoto()}>
-                        <Text>Cancelar foto</Text>
+                <View style={styles.formContainer}>
+                    <Image style={styles.camera} source={{uri: this.state.urlInternaFoto}} />
+                    <TouchableOpacity style={styles.button} onPress={() => this.aceptarFoto()}>
+                        <Text style={styles.textButton}>Aceptar</Text>
                     </TouchableOpacity>
-                </view>
+                    <TouchableOpacity style={styles.button} onPress={() => this.rechazarFoto()}>
+                        <Text style={styles.textButton}>Rechazar</Text>
+                    </TouchableOpacity>
+                </View>
                 :
-                <Text>No se habilitarion los permisos de la camara</Text>
+                <Text style={styles.texto}>No tenes permisos de la camara</Text>
                 }
             </>
         )

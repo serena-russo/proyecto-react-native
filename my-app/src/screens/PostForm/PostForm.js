@@ -21,9 +21,15 @@ class PostForm extends Component {
             createdAt: Date.now(), 
             likes: [],
             comentarios:[],
-            foto: this.state.url
+            url: this.state.url
         })
-        .then( console.log ("posteo ok!"))
+        .then( res=>{
+            console.log ("posteo ok!")
+            this.setState({
+                textoPost:'',
+                url:'',
+            })
+        })
         .catch( e => console.log(e))
     }
 
@@ -39,29 +45,33 @@ class PostForm extends Component {
     render(){
         return(
             <View style={styles.formContainer}>
-                {
-                    this.state.mostrarCamara ?
-                    <Camara onImageUpload = {(url) => this.onImageUpload(url)} />
-                    :
-                    <>
-                     
-                        <Text style= {styles.titulo}> New Post </Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(text) => this.setState ({textoPost: text})}
-                            placeholder='caption here...'
-                            keyboardType='default'
-                            value= {this.state.textoPost}
-                        />
-                    <></>
-                        <TouchableOpacity style = {styles.button} onPress={() => {this.crearPost(); this.props.navigation.navigate('Home'); this.setState({ mostrarCamara: true})}}>
-                            <Text style={styles.textButton}>Post</Text>
-                        </TouchableOpacity>
-                    </>
-                }
+                {this.state.mostrarCamara ? <Camara onImageUpload={(url)=> this.onImageUpload(url)}/> :
+                
+                <>
+                
+                <TextInput
+                style={styles.input}
+                onChangeText={(text)=>this.setState({textoPost: text})}
+                placeholder='Escribir...'
+                keyboardType='default'
+                value={this.state.textoPost}
+                />
+               
+                <></>                
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                        this.crearPost();
+                        this.props.navigation.navigate('Menu');
+                        this.setState({ mostrarCamara: true });
+                    }}
+                    >
+                    <Text style={styles.textButton}>Postear</Text>
+                </TouchableOpacity>
+                </>}
             </View>
         )
-    }
+        }
 }
 
 const styles = StyleSheet.create({
