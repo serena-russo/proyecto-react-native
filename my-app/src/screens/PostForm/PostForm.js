@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {db, auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import Camara from '../../components/Camara/Camara'
 
 class PostForm extends Component {
@@ -45,30 +45,30 @@ class PostForm extends Component {
     render(){
         return(
             <View style={styles.formContainer}>
+                <Text>New Post</Text>
                 {this.state.mostrarCamara ? <Camara onImageUpload={(url)=> this.onImageUpload(url)}/> :
                 
-                <>
                 
-                <TextInput
-                style={styles.input}
-                onChangeText={(text)=>this.setState({textoPost: text})}
-                placeholder='Escribir...'
-                keyboardType='default'
-                value={this.state.textoPost}
-                />
-               
-                <></>                
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                        this.crearPost();
-                        this.props.navigation.navigate('Menu');
-                        this.setState({ mostrarCamara: true });
-                    }}
-                    >
-                    <Text style={styles.textButton}>Postear</Text>
-                </TouchableOpacity>
-                </>}
+                <React.Fragment>
+                    <TextInput
+                    style={styles.input}
+                    onChangeText={(text)=>this.setState({textoPost: text})}
+                    placeholder='Escribir...'
+                    keyboardType='default'
+                    value={this.state.textoPost}
+                    />
+                                           
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            this.crearPost(auth.currentUser.email, this.state.textoPost, this.state.fotoUrl, Date.now());
+                            this.props.navigation.navigate('Menu');
+                            this.setState({ mostrarCamara: true });
+                        }}
+                        >
+                        <Text style={styles.textButton}>Postear</Text>
+                    </TouchableOpacity>
+                </React.Fragment>}
             </View>
         )
         }

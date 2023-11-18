@@ -67,7 +67,7 @@ class Post extends Component{
                 </TouchableOpacity>
 
                 <Image style= {styles.camara}
-                    source={{uri: this.props.dataPost.datos.foto}}
+                    source={{uri: this.props.dataPost.datos.url}}
                 /> 
               </View>
               
