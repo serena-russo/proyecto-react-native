@@ -4,8 +4,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Register from './src/screens/Register/Register';
 import Login from './src/screens/Login/Login';
-//import Perfil from './src/screens/Perfil/Perfil';
 import Menu from './src/components/Menu/Menu';
+import Comentarios from './src/screens/Comentarios/Comentarios';
+import UsuarioPerfil from './src/screens/UsuarioPerfil/UsuarioPerfil';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +20,9 @@ export default function App() {
         <Stack.Screen name='Login' component={Login} options={{headerShown: false}}/>
         <Stack.Screen name='Register' component={Register} options={{headerShown: false}}/>
         <Stack.Screen name='Menu' component={Menu} options={{headerShown: false}}/>
-       
+        <Stack.Screen name='Comentarios' component={Comentarios} options={{headerShown: false}}/>
+        <Stack.Screen name='UsuarioPerfil' component={UsuarioPerfil} options={{headerShown: false}}/>
+
        </Stack.Navigator>
     </NavigationContainer>
   );

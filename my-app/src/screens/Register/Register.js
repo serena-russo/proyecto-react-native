@@ -23,8 +23,8 @@ class Register extends Component {
             console.log(user)
 
             if (user) {
-                //Redirigir al usuario al login del sitio.
-               this.props.navigation.navigate('Login')
+                //Redirigir al usuario al menu del sitio.
+               this.props.navigation.navigate('Menu')
             }
         })
     }
@@ -50,35 +50,34 @@ class Register extends Component {
                                 password: "",
                                 miniBio: "",
                                 fotoPerfil: "",
+                                mensajeE: null
                             })
                             auth.signOut();
                         }) 
                         .then(() => {
-                            this.props.navigation.navigate('Menu');
-                    
+                            this.props.navigation.navigate('Login');
+                        })
             })
-
-                .catch( error => {
-                    //Cuando Firebase responde con un error
-                    let mensajeError =  "Error en el registro."
-                    if (error.code === "auth/email-already-in-use") {
-                        mensajeError = "El email ya está usado";
-                    } else if (error.code === "auth/invalid-email") {
-                        mensajeError = "El email no es válido";
-                    } else if (error.code === "auth/weak-password") {
-                        mensajeError = "La contraseña es débil";
-                    } 
-                    this.setState({ error: mensajeError });
-                    console.log(error);
-                });
-            }) 
+            .catch( error => {
+                //Cuando Firebase responde con un error
+                let Error =  "Error en el registro."
+                if (error.code === "auth/email-already-in-use") {
+                    Error = "El email ya está usado";
+                } else if (error.code === "auth/invalid-email") {
+                    Error = "El email no es válido";
+                } else if (error.code === "auth/weak-password") {
+                    Error = "La contraseña es débil";
+                } 
+                this.setState({ mensajeE: Error });
+                console.log(mensajeE);
+            }); 
     }
 
     render(){
         return(
             <View style={styles.formContainer}>
                 <Text>Register</Text>
-                {this.state.mensajeE ? <Text style={styles.textoE}>{this.state.mensajeE}</Text>
+                {this.state.mensajeE ? (<Text style={styles.textoE}>{this.state.mensajeE}</Text>)
                 : null}
 
                 <TextInput
@@ -118,7 +117,7 @@ class Register extends Component {
                     value={this.state.fotoPerfil}
                     />
 
-                <TouchableOpacity style={styles.button} onPress={()=> this.register(this.state.email, this.state.password, this.state.userName, this.state.miniBio, this.state.fotoPerfil)} disabled= {!this.state.email || !this.state.password || !this.state.userName}>    
+                <TouchableOpacity style={styles.button} onPress={()=> this.register(this.state.email, this.state.password, this.state.userName, this.state.miniBio, this.state.fotoPerfil)} disabled= {!this.state.email || !this.state.password || !this.state.userName} >    
                     <Text style={styles.textButton}>Registrarse</Text>    
                 </TouchableOpacity>
                 

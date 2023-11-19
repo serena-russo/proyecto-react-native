@@ -7,7 +7,7 @@ class Perfil extends Component {
     constructor(props){
         super(props)
         this.state = {
-            posts: [],
+            ListaPosts: [],
             infoUser: {},
             id: ''
         }

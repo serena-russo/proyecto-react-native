@@ -45,7 +45,7 @@ class Buscador extends Component {
         this.setState({filtradoUsers: filtrado}, () => console.log(this.state.filtradoUsers))    
     }
     usuarioSeleccionado(id){
-        this.props.navigation.navigate("ProfileUsers", id)
+        this.props.navigation.navigate("UsuarioPerfil", id)
         console.log(id)
     }
     

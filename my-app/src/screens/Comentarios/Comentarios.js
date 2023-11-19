@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import {db, auth} from '../../firebase/config'
 import { Text, View, TextInput, TouchableOpacity, StyleSheet,FlatList} from 'react-native'
 
-class Comentario extends Component{
+class Comentarios extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -15,7 +15,7 @@ class Comentario extends Component{
     }
 
     componentDidMount(){
-        db.collection("posts")
+        db.collection('posts')
         .doc(this.props.route.params.id)
         .onSnapshot(doc=>{
             this.setState({id:doc.id,data:doc.data()})
@@ -23,7 +23,7 @@ class Comentario extends Component{
     }
 
     agregarC (id, comentario){
-        db.collection("posts")
+        db.collection('posts')
         .doc(id)
         .update({
             comentarios: firebase.firestore.FieldValue.arrayUnion({
@@ -42,6 +42,7 @@ class Comentario extends Component{
       }
 
       render() {
+        console.log(this.state)
         return (
             <View style={styles.container}>
                 {this.state.data.comentarios && this.state.data.comentarios.length > 0 ? (
@@ -88,62 +89,8 @@ class Comentario extends Component{
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-      backgroundColor: '#FFFFFF'
-    },
-    comentarioContainer: {
-      borderBottomWidth: 1,
-      borderBottomColor: 'red',
-      paddingBottom: 10,
-      marginBottom: 10
-    },
-    owner: {
-      marginBottom: 5,
-      fontWeight: 'bold'
-    },
-    texto: {
-      color: 'orange'
-    },
-    contenedor7: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: 20,
-    },
-    input: {
-      flex: 1,
-      borderWidth: 1,
-      borderColor: 'pink',
-      padding: 10,
-      marginRight: 10
-    },
-    botonVm: {
-        padding: 10,
-        backgroundColor: '#3498db',
-        borderRadius: 5,
-        marginTop: 10
-      },
-      botonVmTexto: {
-        color: '#FFFFFF',
-        textAlign: 'center'
-      },
-    comentario6: {
-      padding: 10,
-      backgroundColor: 'red',
-      borderRadius: 5
-    },
-    comentario6texto: {
-      color: 'red',
-      textAlign: 'center'
-    },
-    irHome: {
-      marginTop: 20,
-      color: '#3897f0',
-      textDecorationLine: 'underline'
-    }
+    
 });
 
 
-export default Comentario
+export default Comentarios

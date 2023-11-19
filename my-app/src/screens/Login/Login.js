@@ -10,7 +10,18 @@ class Login extends Component {
             password:''
         }
     }
+    componentDidMount(){
+        console.log("Chequeando si el usuario está logueado en Firebase");
 
+        auth.onAuthStateChanged( user => {
+            console.log(user)
+
+            if (user) {
+                //Redirigir al usuario al menu del sitio.
+               this.props.navigation.navigate('Menu')
+            }
+        })
+    }
    
     login (email, pass){
         auth.signInWithEmailAndPassword(email, pass)
