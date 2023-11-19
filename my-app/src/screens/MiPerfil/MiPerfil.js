@@ -80,7 +80,7 @@ class Perfil extends Component {
 
 const styles = StyleSheet.create({
     contenedor: {
-        backgroundColor: 'green',
+        backgroundColor: 'purple',
         padding: 18,
     },
     info3: {
