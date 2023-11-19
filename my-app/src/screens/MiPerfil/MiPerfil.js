@@ -47,7 +47,6 @@ class Perfil extends Component {
     logout(){
         auth.signOut();
         this.props.navigation.navigate('Login')
-
     }
 
     render(){
@@ -58,13 +57,13 @@ class Perfil extends Component {
                 <View  style={styles.info3}>
                     <Text style= {styles.usuario}>Bienvenido {this.state.infoUser.userName}</Text>
                     <Text style= {styles.bio}>Biografia: {this.state.infoUser.miniBio}</Text>
-                    <Text style= {styles.mail}>Mail: {this.state.infoUser.owner}</Text>
+                    <Text style= {styles.mail}>Mail: {auth.currentUser.email}</Text>
                     <Image style= {styles.imagenP} source={{uri: this.state.infoUser.fotoPerfil}}/>
                 </View>
 
                 <Text style={styles.titulos}>Mis posteos:</Text>
                 <FlatList
-                    data={this.state.ListaPosts}
+                    data={this.state.posts}
                     keyExtractor={(onePost) => onePost.id}
                     renderItem={({ item }) => <Posts dataPost={item} navigation={this.props.navigation} />}
                   />
@@ -80,7 +79,7 @@ class Perfil extends Component {
 
 const styles = StyleSheet.create({
     contenedor: {
-        backgroundColor: 'purple',
+        backgroundColor: 'lightblue',
         padding: 18,
     },
     info3: {
@@ -114,7 +113,8 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: 15,
+        marginTop: 10,
+        fontWeight: 'bold',
     },
 })
 
