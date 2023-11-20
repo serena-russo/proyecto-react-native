@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {db, auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {TextInput, ScrollView, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import Camara from '../../components/Camara/Camara'
 
 class PostForm extends Component {
@@ -44,8 +44,9 @@ class PostForm extends Component {
 
     render(){
         return(
+            <ScrollView style= {styles.contenedor}>
             <View style={styles.formContainer}>
-                <Text>New Post</Text>
+                <Text style={styles.titulo}>New Post</Text>
                 {this.state.mostrarCamara ? <Camara onImageUpload={(url)=> this.onImageUpload(url)}/> :
                 
                 
@@ -70,6 +71,7 @@ class PostForm extends Component {
                     </TouchableOpacity>
                 </React.Fragment>}
             </View>
+            </ScrollView>
         )
         }
 }
@@ -106,8 +108,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 25,
-    }
+    },
+    contenedor: {
+        backgroundColor: 'lightblue',
+        padding: 18,
+    },
+    zzz:{
 
+    }
 
 })
 

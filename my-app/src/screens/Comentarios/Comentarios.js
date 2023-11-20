@@ -14,14 +14,14 @@ class Comentarios extends Component{
         }
     }
 
-    componentDidMount(){
+  componentDidMount(){
         db.collection('posts')
         .doc(this.props.route.params.id)
         .onSnapshot(doc=>{
             this.setState({id:doc.id,data:doc.data()})
         })
     }
-
+    
     addComment(id,comentario){
         db.collection('posts')
         .doc(id)
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'lightblue'
   },
   commentContainer: {
     borderBottomWidth: 1,
@@ -106,17 +106,19 @@ const styles = StyleSheet.create({
   },
   commentButton: {
     padding: 10,
-    backgroundColor: '#3897f0',
+    backgroundColor: 'blue',
     borderRadius: 5,
   },
   commentButtonText: {
     color: '#FFFFFF',
     textAlign: 'center',
+    fontWeight:'bold'
   },
   goBackText: {
     marginTop: 20,
     color: '#black',
     textDecorationLine: 'underline',
+    fontWeight: 'bold',
   },
 });
 export default Comentarios;

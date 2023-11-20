@@ -107,6 +107,31 @@ const styles = StyleSheet.create({
     camera: {
         widht: '100%',
         height: '100%',
+    },
+    textButton:{
+        fontWeight: 'bold',
+        backgroundColor:'blue',
+        borderColor: 'blue',
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        textAlign: 'center',
+        borderRadius:4, 
+        borderWidth:1,
+        borderStyle: 'solid',
+        color: '#fff'
+    },
+    button:{
+        fontWeight: 'bold',
+        backgroundColor:'blue',
+        borderColor: 'blue',
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        textAlign: 'center',
+        borderRadius:4, 
+        borderWidth:1,
+        borderStyle: 'solid',
+        color: '#fff',
+        margin: 5,
     }
 
 });

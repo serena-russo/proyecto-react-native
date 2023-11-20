@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image} from 'react-native';
+import { View, Text, ScrollView, FlatList, StyleSheet, Image} from 'react-native';
 import { auth, db } from '../../firebase/config';
 import Posts from '../../components/Posts/Posts';
 
@@ -48,7 +48,8 @@ class UsuarioPerfil extends Component {
     render(){
         console.log(this.state);
         return(
-            <View style= {styles.contenedor}>
+            <ScrollView style= {styles.contenedor}>
+            <View>
 
                 <View  style={styles.info3}>
                     <Text style= {styles.usuario}>{this.state.infoUser.userName}</Text>
@@ -57,14 +58,15 @@ class UsuarioPerfil extends Component {
                 </View>
 
                 <Text style={styles.titulos}>{this.state.ListaPosts.length} Posteos:</Text>
+
                 <FlatList
                     data={this.state.ListaPosts}
                     keyExtractor={(onePost) => onePost.id}
                     renderItem={({ item }) => <Posts dataPost={item} navigation={this.props.navigation} />}
                   />
-           
-                
+
             </View>
+            </ScrollView>
         )
     }
 }

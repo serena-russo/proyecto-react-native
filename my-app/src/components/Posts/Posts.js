@@ -51,7 +51,7 @@ class Post extends Component{
         .catche(e => console.log(e))
     }
 
-    deletePost = () => {
+    borrarPost = () => {
         const postOwner = this.props.dataPost.datos.owner;
         const currentUserEmail = auth.currentUser.email;
         if (postOwner === currentUserEmail) {
@@ -106,18 +106,18 @@ class Post extends Component{
             </View>
 
             <View>
-                <Text>{this.state.cantidadDeComentarios} Comentarios</Text>
                 <TouchableOpacity style= {styles.button} onPress={() => this.props.navigation.navigate('Comentarios' , {id: this.props.dataPost.id})}>
-                    Presionar para ver comentarios
+                    <Text style={styles.textButton}> Presionar para ver comentarios </Text>
                 </TouchableOpacity>
+                <Text>{this.state.cantidadDeComentarios} Comentarios</Text>
             </View>
             
             {this.state.mostrarMensaje ? null : (
-                    <TouchableOpacity onPress={this.deletePost}></TouchableOpacity>
+                    <TouchableOpacity onPress={this.borrarPost}></TouchableOpacity>
     )}
                     {this.state.mostrarMensaje? (
                         <View>
-                        <Text >No tienes permiso para eliminar este post.</Text>
+                        <Text> No tienes permiso para eliminar este post </Text>
                         </View>
                     ):
                     null}
@@ -142,17 +142,24 @@ const styles = StyleSheet.create({
         marginVertical:10,
     },
     button:{
-        backgroundColor:'pink',
+        backgroundColor:'blue',
+        borderColor: 'blue',
         paddingHorizontal: 10,
         paddingVertical: 6,
         textAlign: 'center',
         borderRadius:4, 
         borderWidth:1,
         borderStyle: 'solid',
-        borderColor: 'pink'
+       
+        paddingHorizontal: 15,
+        borderWidth: 3,
+
+        borderRadius: 5,
+        marginVertical: 5,
     },
     textButton:{
-        color: '#fff'
+        color: '#fff',
+        fontWeight: 'bold'
     }, 
     manzana:{
         margin: 10,

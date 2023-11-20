@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
+import {TextInput, ScrollView, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
 import { db } from '../../firebase/config';
 
 class Buscador extends Component {
@@ -36,10 +36,8 @@ class Buscador extends Component {
 
     buscarResultados(textoS){
         this.setState({
-            usersFiltrados: this.state.users.filter((user)=>
-                user.data.userName.toLowerCase().includes(textoS.toLowerCase())),
-            mailDeUsers: this.state.users.filter((user)=>
-                user.data.owner.toLowerCase().includes(textoS.toLowerCase())),
+            usersFiltrados: this.state.users.filter((user) => user.data.userName.toLowerCase().includes(textoS.toLowerCase())),
+                mailDeUsers: this.state.users.filter((user)=> user.data.owner.toLowerCase().includes(textoS.toLowerCase())),
                 search: true,
                 textoSearch: textoS,
         })
@@ -47,11 +45,11 @@ class Buscador extends Component {
 
     render(){
         return(
+            <ScrollView style= {styles.contenedor}>
             <View style={styles.mainContainer}>
-                <Text style= {styles.title}>Buscador</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder='Busca al usuario que desees'
+                    placeholder='Buscar usuario'
                     keyboardType='default'
                     onChangeText={textoS => this.buscarResultados(textoS)}
                     value={this.state.textoSearch}>
@@ -66,8 +64,7 @@ class Buscador extends Component {
                     keyExtractor= {user => user.id.toString()}
                     renderItem= {({item}) =>(
                         <TouchableOpacity
-                            onPress={() =>
-                                this.props.navigation.navigate('MiPerfil', {mail: item.data.owner })} >
+                            onPress={() => this.props.navigation.navigate('MiPerfil', {mail: item.data.owner })} >
                         <View>
                         <Text>Nombre de usuario:</Text>
                         <Text>{item.data.userName}</Text>
@@ -78,41 +75,34 @@ class Buscador extends Component {
                     data= {this.state.mailDeUsers}
                     keyExtractor={user => user.id.toString()}
                     renderItem={({item}) => (
-                        <TouchableOpacity onPress={() =>
-                            this.props.navigation.navigate('UsuarioPerfil', { mail: item.data.owner })}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('UsuarioPerfil', { mail: item.data.owner })}>
                         <View>
                         <Text>Email:</Text>
                         <Text>{item.data.owner}</Text>
                         </View>
                         </TouchableOpacity>)}
                     />)
+                    
                 }
             </View>
+            </ScrollView>
+
         )
     }
 
 }
 
 const styles= StyleSheet.create({
-    title: {
-        textAlign: 'center',
-        fontSize: '26px',
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#333',
-    },
     input:{
-        height:20,
-        width: 475,
+        height: 20,
+        width: 300,
         alignSelf: 'center',
-        paddingVertical:15,
-        paddingHorizontal: 10,
-        borderWidth:1,
-        borderColor: '#ccc',
-        borderStyle: 'solid',
-        borderRadius: 6,
-        marginVertical:10,
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+        borderWidth: 3,
+        borderColor: 'black',
+        borderRadius: 5,
+        marginVertical: 5,
     },
     mainContainer: {
         flex: 1,
@@ -122,6 +112,10 @@ const styles= StyleSheet.create({
         flex: 1,
         backgroundColor: '#F7F7F7',
         padding: 20,
+    },
+    contenedor: {
+        backgroundColor: 'lightblue',
+        padding: 18,
     },
 })
 

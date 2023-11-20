@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet, ScrollView} from 'react-native';
 
 class Login extends Component {
     constructor(){
@@ -44,8 +44,9 @@ class Login extends Component {
 
     render(){
         return(
-            <View style={styles.formContainer}>
-                <Text>Login</Text>
+            <ScrollView style={styles.formContainer}>
+            <View>
+                <Text style={styles.textoLogin}>Login</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={(text)=>this.setState({email: text})}
@@ -65,11 +66,13 @@ class Login extends Component {
                     <Text style={styles.textButton}>Ingresar</Text>    
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
-                    <Text>No tengo cuenta. Registrarme.</Text>
+                <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Register')}>
+                    <Text style={styles.textButton}>¿No tienes una cuenta? Regístrate</Text>
                 </TouchableOpacity>
 
             </View>
+
+            </ScrollView>
         )
     }
 }
@@ -78,6 +81,7 @@ const styles = StyleSheet.create({
     formContainer:{
         paddingHorizontal:10,
         marginTop: 20,
+        backgroundColor: 'lightblue'
     },
     input:{
         height:20,
@@ -91,16 +95,22 @@ const styles = StyleSheet.create({
     },
     button:{
         backgroundColor:'violet',
+        borderColor: 'violet',
         paddingHorizontal: 10,
         paddingVertical: 6,
         textAlign: 'center',
         borderRadius:4, 
         borderWidth:1,
         borderStyle: 'solid',
-        borderColor: '#28a745'
+        margin: 5,
     },
     textButton:{
-        color: '#fff'
+        color: 'white',
+        fontWeight:'bold'
+    },
+    textoLogin:{
+        fontSize: 25,
+        fontWeight: 'bold',
     }
 
 })

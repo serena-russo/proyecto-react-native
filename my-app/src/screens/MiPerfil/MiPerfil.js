@@ -69,7 +69,7 @@ class Perfil extends Component {
                   />
            
                 <TouchableOpacity onPress={() => this.logout()} style={styles.botonSalir}>
-                    <Text style={styles.mail}> Cerrar sesión</Text>
+                    <Text style={styles.textooooooooo}> CERRAR SESION </Text>
                 </TouchableOpacity>
             
             </ScrollView>
@@ -109,13 +109,21 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     botonSalir: {
-        backgroundColor: 'red',
-        padding: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginTop: 10,
-        fontWeight: 'bold',
+        backgroundColor: '#d2b48c',
+        borderColor: '#d2b48c',
+        borderStyle: 'solid',
+        paddingHorizontal: 6,
+        paddingVertical: 6,
+        textAlign: 'center',
+        borderRadius: 2,
+        borderWidth:1,
     },
+    textooooooooo:{
+        fontSize: 15,
+        fontWeight: 'bold',
+        alignItems: 'center',
+        textAlign: 'center',
+    }
 })
 
 export default Perfil

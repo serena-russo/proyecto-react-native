@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { auth , db} from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {TextInput, ScrollView, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
 class Register extends Component {
     constructor(){
@@ -75,8 +75,9 @@ class Register extends Component {
 
     render(){
         return(
-            <View style={styles.formContainer}>
-                <Text>Register</Text>
+            <ScrollView style={styles.formContainer}>
+            <View>
+                <Text style={styles.textoLogin}>Register</Text>
                 {this.state.mensajeE ? (<Text style={styles.textoE}>{this.state.mensajeE}</Text>)
                 : null}
 
@@ -121,10 +122,11 @@ class Register extends Component {
                     <Text style={styles.textButton}>Registrarse</Text>    
                 </TouchableOpacity>
                 
-                <TouchableOpacity onPress={ () => this.props.navigation.navigate('Login')}>
-                   <Text>Ya tengo cuenta. Ir al login</Text>
+                <TouchableOpacity style={styles.button} onPress={ () => this.props.navigation.navigate('Login')}>
+                   <Text style={styles.textButton}>Ya tengo cuenta. Ir al login</Text>
                 </TouchableOpacity>
             </View>
+            </ScrollView>
         )
     }
 }
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
     formContainer:{
         paddingHorizontal:10,
         marginTop: 20,
+        backgroundColor: 'lightblue'
     },
     input:{
         height:20,
@@ -145,22 +148,28 @@ const styles = StyleSheet.create({
         marginVertical:10,
     },
     button:{
-        backgroundColor:'#28a745',
+        backgroundColor:'violet',
+        borderColor: 'violet',
         paddingHorizontal: 10,
         paddingVertical: 6,
         textAlign: 'center',
         borderRadius:4, 
         borderWidth:1,
         borderStyle: 'solid',
-        borderColor: '#28a745'
-    },
-    textButton:{
-        color: '#fff'
+        margin:5
     },
     textoE: {
         color: 'red',
         marginBottom: 20
-    }
+    },
+    textoLogin:{
+        fontSize: 25,
+        fontWeight: 'bold',
+    },
+    textButton:{
+        color: 'white',
+        fontWeight:'bold'
+    },
 
 })
 
