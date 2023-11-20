@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {TextInput, ScrollView, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
-import { db } from '../../firebase/config';
+import {db} from '../../firebase/config';
 
 class Buscador extends Component {
     constructor(props){
@@ -8,8 +8,8 @@ class Buscador extends Component {
         this.state={
             usersFiltrados:[],
             users: [],
-            mailDeUsers: [],
-            textoSearch: "",
+            mailUsers: [],
+            textoBusq: "",
             search: false,
         }
     }
@@ -37,9 +37,9 @@ class Buscador extends Component {
     buscarResultados(textoS){
         this.setState({
             usersFiltrados: this.state.users.filter((user) => user.data.userName.toLowerCase().includes(textoS.toLowerCase())),
-                mailDeUsers: this.state.users.filter((user)=> user.data.owner.toLowerCase().includes(textoS.toLowerCase())),
+                mailUsers: this.state.users.filter((user)=> user.data.owner.toLowerCase().includes(textoS.toLowerCase())),
                 search: true,
-                textoSearch: textoS,
+                textoBusq: textoS,
         })
     }
 
@@ -52,11 +52,11 @@ class Buscador extends Component {
                     placeholder='Buscar usuario'
                     keyboardType='default'
                     onChangeText={textoS => this.buscarResultados(textoS)}
-                    value={this.state.textoSearch}>
+                    value={this.state.textoBusq}>
                 </TextInput>
 
                 {
-                    this.state.usersFiltrados.length === 0 && this.state.search === true && this.state.mailDeUsers.length === 0 ?
+                    this.state.usersFiltrados.length === 0 && this.state.search === true && this.state.mailUsers.length === 0 ?
                     (<Text> No hay resultados que coincidan</Text>)
                     : (
                     <FlatList
@@ -71,8 +71,9 @@ class Buscador extends Component {
                         </View>
                         </TouchableOpacity>)}
                     />,
+                    
                     <FlatList
-                    data= {this.state.mailDeUsers}
+                    data= {this.state.mailUsers}
                     keyExtractor={user => user.id.toString()}
                     renderItem={({item}) => (
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('UsuarioPerfil', { mail: item.data.owner })}>
@@ -81,12 +82,10 @@ class Buscador extends Component {
                         <Text>{item.data.owner}</Text>
                         </View>
                         </TouchableOpacity>)}
-                    />)
-                    
+                    />) 
                 }
             </View>
             </ScrollView>
-
         )
     }
 
@@ -116,7 +115,7 @@ const styles= StyleSheet.create({
     contenedor: {
         backgroundColor: 'lightblue',
         padding: 18,
-    },
+    }
 })
 
 export default Buscador;

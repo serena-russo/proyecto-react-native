@@ -34,7 +34,6 @@ class Home extends Component {
             )
     }
 
-
     render(){
         console.log(this.state);
         return(

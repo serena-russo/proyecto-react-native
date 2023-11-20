@@ -40,8 +40,6 @@ class PostForm extends Component {
         })
     }
 
-  
-
     render(){
         return(
             <ScrollView style= {styles.contenedor}>
@@ -73,7 +71,7 @@ class PostForm extends Component {
             </View>
             </ScrollView>
         )
-        }
+    }
 }
 
 const styles = StyleSheet.create({
@@ -112,12 +110,7 @@ const styles = StyleSheet.create({
     contenedor: {
         backgroundColor: 'lightblue',
         padding: 18,
-    },
-    zzz:{
-
     }
-
 })
-
 
 export default PostForm;  

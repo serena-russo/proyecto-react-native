@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import {db, auth} from '../../firebase/config'
 import firebase from 'firebase'
 
-
 class Comentarios extends Component{
     constructor(props){
         super(props)
@@ -65,13 +64,15 @@ class Comentarios extends Component{
                 <Text style={styles.commentButtonText}>Comentar</Text>
               </TouchableOpacity>
             </View>
-            <Text onPress={() => this.props.navigation.navigate('Menu')} style={styles.goBackText}>
+            <Text onPress={() => this.props.navigation.navigate('Menu')} style={styles.yaNoSe}>
               Volver a home
             </Text>
           </View>
         );
       }
     }
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -88,9 +89,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
   },
-  commentText: {
-    color: '#333333',
-  },
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -104,6 +102,12 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
   },
+  yaNoSe: {
+    marginTop: 20,
+    color: '#black',
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
+  },
   commentButton: {
     padding: 10,
     backgroundColor: 'blue',
@@ -113,12 +117,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     textAlign: 'center',
     fontWeight:'bold'
-  },
-  goBackText: {
-    marginTop: 20,
-    color: '#black',
-    textDecorationLine: 'underline',
-    fontWeight: 'bold',
-  },
+  }
 });
+
 export default Comentarios;

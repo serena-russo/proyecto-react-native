@@ -3,7 +3,6 @@ import {Camera} from "expo-camera";
 import {db, storage} from '../../firebase/config';
 import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
 
-
 class Camara extends Component{
     constructor(props){
         super(props),
@@ -28,6 +27,7 @@ class Camara extends Component{
             })
             .catch( e => console.log(e))
     }
+
     sacarFoto(){
         console.log ("sacando foto")
 
@@ -66,6 +66,7 @@ class Camara extends Component{
             urlInternaFoto: ''
         })
     }
+
     render(){
         return (
             <>
@@ -131,9 +132,8 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderStyle: 'solid',
         color: '#fff',
-        margin: 5,
+        margin: 5
     }
-
 });
 
 export default Camara

@@ -3,7 +3,6 @@ import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {db, auth} from '../../firebase/config';
 import firebase from 'firebase';
 
-
 class Post extends Component{
     constructor(props){
         super(props);
@@ -69,8 +68,6 @@ class Post extends Component{
                 // Puedes mostrar un mensaje o tomar otra acción para informar al usuario
             }
         };
-
-
 
     render (){
         console.log(this.props)
@@ -144,18 +141,13 @@ const styles = StyleSheet.create({
     button:{
         backgroundColor:'blue',
         borderColor: 'blue',
-        paddingHorizontal: 10,
         paddingVertical: 6,
         textAlign: 'center',
-        borderRadius:4, 
-        borderWidth:1,
         borderStyle: 'solid',
-       
         paddingHorizontal: 15,
         borderWidth: 3,
-
         borderRadius: 5,
-        marginVertical: 5,
+        marginVertical: 5
     },
     textButton:{
         color: '#fff',
@@ -165,14 +157,14 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 10,
         backgroundColor: '#fff',
-        borderRadius: 10,
+        borderRadius: 10
     },
     banana: {
         marginBottom: 10
     },
     usuario: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontWeight: 'bold'
     },
     camara:{
         width: '100%',
@@ -187,9 +179,8 @@ const styles = StyleSheet.create({
     }, 
     bar:{
         flexDirection: 'row',
-        alignItems: 'center',
-    },
-
+        alignItems: 'center'
+    }
 })
 
 export default Post

@@ -55,7 +55,7 @@ class Perfil extends Component {
             <ScrollView style= {styles.contenedor}>
 
                 <View  style={styles.info3}>
-                    <Text style= {styles.usuario}>Bienvenido {this.state.infoUser.userName}</Text>
+                    <Text style= {styles.usuario}>¡Bienvenidx {this.state.infoUser.userName}!</Text>
                     <Text style= {styles.bio}>Biografia: {this.state.infoUser.miniBio}</Text>
                     <Text style= {styles.mail}>Mail: {auth.currentUser.email}</Text>
                     <Image style= {styles.imagenP} source={{uri: this.state.infoUser.fotoPerfil}}/>

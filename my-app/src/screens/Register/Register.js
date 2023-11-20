@@ -169,9 +169,7 @@ const styles = StyleSheet.create({
     textButton:{
         color: 'white',
         fontWeight:'bold'
-    },
-
+    }
 })
-
 
 export default Register;

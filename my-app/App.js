@@ -8,9 +8,7 @@ import Menu from './src/components/Menu/Menu';
 import Comentarios from './src/screens/Comentarios/Comentarios';
 import UsuarioPerfil from './src/screens/UsuarioPerfil/UsuarioPerfil';
 
-
 const Stack = createNativeStackNavigator();
-
 
 export default function App() {
 
@@ -22,7 +20,6 @@ export default function App() {
         <Stack.Screen name='Menu' component={Menu} options={{headerShown: false}}/>
         <Stack.Screen name='Comentarios' component={Comentarios} options={{headerShown: false}}/>
         <Stack.Screen name='UsuarioPerfil' component={UsuarioPerfil} options={{headerShown: false}}/>
-
        </Stack.Navigator>
     </NavigationContainer>
   );
