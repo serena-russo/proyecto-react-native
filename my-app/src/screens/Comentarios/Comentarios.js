@@ -13,6 +13,7 @@ class Comentarios extends Component{
             data: {},
         }
     }
+
     componentDidMount(){
         db.collection('posts')
         .doc(this.props.route.params.id)
@@ -20,6 +21,7 @@ class Comentarios extends Component{
             this.setState({id:doc.id,data:doc.data()})
         })
     }
+
     addComment(id,comentario){
         db.collection('posts')
         .doc(id)

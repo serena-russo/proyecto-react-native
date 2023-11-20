@@ -1,122 +1,111 @@
-import React, { Component } from 'react';
-import {db} from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet,FlatList, ActivityIndicator} from 'react-native';
-
+import React, { Component } from "react";
+import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
+import { db } from '../../firebase/config';
 
 class Buscador extends Component {
-    constructor(){
-        super();
-        this.state = {
-            backup: [],
-            caampoBusqueda: "",
-            filtradoUsers: [],
-            userId: "",
-            infoUser: null,
-            usuarios: [],
+    constructor(props){
+        super(props)
+        this.state={
+            usersFiltrados:[],
+            users: [],
+            mailDeUsers: [],
+            textoSearch: "",
+            search: false,
         }
     }
     
-
     componentDidMount(){
-        db.collection("users").onSnapshot(
-            docs => {
-                let usuarios = [];
-                docs.forEach(dot => {
-                    usuarios.push({
-                        id: dot.id,
-                        data: dot.data()
-                    })
-                    this.setState({backup: usuarios})
+        db.collection('users').onSnapshot(
+            (res) => {
+                let dbUsers = [];
+
+                res.forEach( (user) => {
+                    dbUsers.push(
+                        {
+                            id: user.id,
+                            data: user.data()
+                        }
+                    )
+                });
+                this.setState({
+                    users: dbUsers,
                 })
-                console.log('aca')
-                console.log(usuarios)
             }
         )
     }
 
-    busqueda(){
-        let filtrado = this.state.backup.filter(fil => {
-            if(fil.data.userName.toLowerCase().includes(this.state.caampoBusqueda.toLowerCase())) {
-                return fil
-            }
-        console.log('filtrado')
-        console.log(filtrado) 
-            })
-        this.setState({filtradoUsers: filtrado}, () => console.log(this.state.filtradoUsers))    
+    buscarResultados(textoS){
+        this.setState({
+            usersFiltrados: this.state.users.filter((user)=>
+                user.data.userName.toLowerCase().includes(textoS.toLowerCase())),
+            mailDeUsers: this.state.users.filter((user)=>
+                user.data.owner.toLowerCase().includes(textoS.toLowerCase())),
+                search: true,
+                textoSearch: textoS,
+        })
     }
-    usuarioSeleccionado(id){
-        this.props.navigation.navigate("UsuarioPerfil", id)
-        console.log(id)
-    }
-    
 
-   render(){
+    render(){
         return(
-            <View style={styles.formContainer}>
-                
-                {this.state.backup === 0 ? 
-                
-                <View>
-                   <ActivityIndicator size='large' color='white' />
-                   
-                   <Text>Buscate algo pa!</Text>
-               </View>
-               :
-                <View>
+            <View style={styles.mainContainer}>
+                <Text style= {styles.title}>Buscador</Text>
                 <TextInput
-                style= {styles.input}
-                onChangeText={(text)=> this.setState({caampoBusqueda: text})}
-                placeholder='Buscar Perfiles'
-                keyboardType='default'
-                value={this.state.caampoBusqueda}
-                />
-                </View>
-                }
+                    style={styles.input}
+                    placeholder='Busca al usuario que desees'
+                    keyboardType='default'
+                    onChangeText={textoS => this.buscarResultados(textoS)}
+                    value={this.state.textoSearch}>
+                </TextInput>
 
-                <TouchableOpacity style={styles.button} onPress={()=> {
-                    this.busqueda();
-                    }}>
-                    <Text style={styles.texto}>Buscar</Text>
-                </TouchableOpacity>
                 {
-                    this.state.filtradoUsers.length > 0 ?
-                        
+                    this.state.usersFiltrados.length === 0 && this.state.search === true && this.state.mailDeUsers.length === 0 ?
+                    (<Text> No hay resultados que coincidan</Text>)
+                    : (
+                    <FlatList
+                    data= {this.state.usersFiltrados}
+                    keyExtractor= {user => user.id.toString()}
+                    renderItem= {({item}) =>(
+                        <TouchableOpacity
+                            onPress={() =>
+                                this.props.navigation.navigate('MiPerfil', {mail: item.data.owner })} >
                         <View>
-                            <Text style={styles.texto}> Buscaste : {this.state.caampoBusqueda}</Text>  
-                            <FlatList
-                            data={this.state.filtradoUsers}
-                            keyExtractor={user => user.id}
-                            renderItem= {({item}) =>
-                                <TouchableOpacity style={styles.button} onPress={() => this.usuarioSeleccionado()}>
-                                    <Text style={styles.texto}>{item.data.userName}</Text>
-                                    </TouchableOpacity>
-                            } 
-                            />
-                        </View>     
-                        
-                    :
-                    <Text style={styles.texto}>NO HAY USUARIOS PARA ESTA BÚSQUEDA</Text>
-                    
-                }        
-                
-                
-
-                
+                        <Text>Nombre de usuario:</Text>
+                        <Text>{item.data.userName}</Text>
+                        </View>
+                        </TouchableOpacity>)}
+                    />,
+                    <FlatList
+                    data= {this.state.mailDeUsers}
+                    keyExtractor={user => user.id.toString()}
+                    renderItem={({item}) => (
+                        <TouchableOpacity onPress={() =>
+                            this.props.navigation.navigate('UsuarioPerfil', { mail: item.data.owner })}>
+                        <View>
+                        <Text>Email:</Text>
+                        <Text>{item.data.owner}</Text>
+                        </View>
+                        </TouchableOpacity>)}
+                    />)
+                }
             </View>
         )
+    }
 
-        
-   }
 }
-const styles = StyleSheet.create({
-    formContainer:{
-        flex:1,
-        paddingHorizontal:5,
-        marginTop: 20,
-        backgroundColor:'grey',
+
+const styles= StyleSheet.create({
+    title: {
+        textAlign: 'center',
+        fontSize: '26px',
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: '#333',
     },
     input:{
         height:20,
+        width: 475,
+        alignSelf: 'center',
         paddingVertical:15,
         paddingHorizontal: 10,
         borderWidth:1,
@@ -124,28 +113,16 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderRadius: 6,
         marginVertical:10,
-        color:'white'
     },
-    button:{
-        backgroundColor:'orange',
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        textAlign: 'center',
-        borderRadius:4, 
-        borderWidth:1,
-        borderStyle: 'solid',
-        borderColor: 'orange'
+    mainContainer: {
+        flex: 1,
+        borderRadius: 6,
+        marginHorizontal: 20,
+        marginVertical: 5,
+        flex: 1,
+        backgroundColor: '#F7F7F7',
+        padding: 20,
     },
-    textButton:{
-        color: '#fff'
-    },
-    image: {
-      height: 50,
-   },
-   texto:{
-        color: 'white',
-    }
-
 })
 
 export default Buscador;

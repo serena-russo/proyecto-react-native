@@ -12,20 +12,16 @@ class Post extends Component{
             like: false,
             cantidadDeLikes: this.props.dataPost.datos.likes.length,
             cantidadDeComentarios: this.props.dataPost.datos.comentarios.length,
+            mostrarMensaje: false
         }
     }
 
     componentDidMount(){
-
-        if(this.props.dataPost.datos.likes.length === 0){
+        //Chequiar apenas carga si el post esta o no likeado
+        if (this.props.dataPost.datos.likes.includes(auth.currentUser.email)){
             this.setState({
-                like: false
+                like:true
             })
-        }
-        if(this.props.dataPost.datos.likes.length > 0){
-            this.props.dataPost.datos.likes.forEach( like => {if (like === auth.currentUser.owner) {
-                this.setState({ like: true })
-            }})
         }
     }
 
@@ -34,7 +30,6 @@ class Post extends Component{
         db.collection('posts').doc(this.props.dataPost.id).update({
             likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)         
         })
-
         .then( res => this.setState({
             like:true,
             cantidadDeLikes: this.props.dataPost.datos.likes.length
@@ -55,6 +50,26 @@ class Post extends Component{
         )
         .catche(e => console.log(e))
     }
+
+    deletePost = () => {
+        const postOwner = this.props.dataPost.datos.owner;
+        const currentUserEmail = auth.currentUser.email;
+        if (postOwner === currentUserEmail) {
+            db.collection('posts')
+                .doc(this.props.dataPost.id)
+                .delete()
+                .then(() => {
+                    console.log('Post eliminado correctamente');
+                })
+                .catch(error => {
+                    console.error('Error al eliminar el post:', error);
+                });
+            } else {
+                this.setState({mostrarMensaje: true})
+                // Puedes mostrar un mensaje o tomar otra acción para informar al usuario
+            }
+        };
+
 
 
     render (){
@@ -87,19 +102,25 @@ class Post extends Component{
                         <Text style={styles.textButton}>Likear</Text>    
                     </TouchableOpacity>
                 }
-
-                <Text style={styles.textButton}>{this.state.cantidadDeLikes}</Text>
+            <Text> Cantidad de likes: {this.state.cantidadDeLikes} </Text>
             </View>
 
             <View>
                 <Text>{this.state.cantidadDeComentarios} Comentarios</Text>
                 <TouchableOpacity style= {styles.button} onPress={() => this.props.navigation.navigate('Comentarios' , {id: this.props.dataPost.id})}>
- 
+                    Presionar para ver comentarios
                 </TouchableOpacity>
-
-                
             </View>
             
+            {this.state.mostrarMensaje ? null : (
+                    <TouchableOpacity onPress={this.deletePost}></TouchableOpacity>
+    )}
+                    {this.state.mostrarMensaje? (
+                        <View>
+                        <Text >No tienes permiso para eliminar este post.</Text>
+                        </View>
+                    ):
+                    null}
         </View>
         )
     }
@@ -160,7 +181,8 @@ const styles = StyleSheet.create({
     bar:{
         flexDirection: 'row',
         alignItems: 'center',
-    }
+    },
+
 })
 
 export default Post
