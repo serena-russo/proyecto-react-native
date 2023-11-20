@@ -65,7 +65,7 @@ class Comentarios extends Component{
               </TouchableOpacity>
             </View>
             <Text onPress={() => this.props.navigation.navigate('Menu')} style={styles.yaNoSe}>
-              Volver a home
+              Ir al home
             </Text>
           </View>
         );

@@ -64,7 +64,10 @@ class UsuarioPerfil extends Component {
                     keyExtractor={(onePost) => onePost.id}
                     renderItem={({ item }) => <Posts dataPost={item} navigation={this.props.navigation} />}
                   />
-
+                
+                <Text onPress={() => this.props.navigation.navigate('Menu')} style={styles.yaNoSe}>
+                    Ir al home
+                </Text>
             </View>
             </ScrollView>
         )
