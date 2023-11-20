@@ -12,7 +12,6 @@ class Post extends Component{
             like: false,
             cantidadDeLikes: this.props.dataPost.datos.likes.length,
             cantidadDeComentarios: this.props.dataPost.datos.comentarios.length,
-            MostrarComentarios: false
         }
     }
 
@@ -57,17 +56,6 @@ class Post extends Component{
         .catche(e => console.log(e))
     }
 
-    BorrarPost (){
-        if (this.props.dataPost.datos.owner === currentUserEmail){
-            db.collection('posts').doc(this.props.dataPost.id).delete()
-            .then(() => {
-                console.log('Se a eliminado el Post');
-            })
-            .catch(error => {
-                console.error('Error al eliminar el post:', error);
-            });
-        }
-    }
 
     render (){
         console.log(this.props)
@@ -108,7 +96,10 @@ class Post extends Component{
                 <TouchableOpacity style= {styles.button} onPress={() => this.props.navigation.navigate('Comentarios' , {id: this.props.dataPost.id})}>
  
                 </TouchableOpacity>
+
+                
             </View>
+            
         </View>
         )
     }

@@ -56,7 +56,7 @@ class UsuarioPerfil extends Component {
                     <Image style= {styles.imagenP} source={{uri: this.state.infoUser.fotoPerfil}}/>
                 </View>
 
-                <Text style={styles.titulos}>Posteos:</Text>
+                <Text style={styles.titulos}>{this.state.ListaPosts.length} Posteos:</Text>
                 <FlatList
                     data={this.state.ListaPosts}
                     keyExtractor={(onePost) => onePost.id}
